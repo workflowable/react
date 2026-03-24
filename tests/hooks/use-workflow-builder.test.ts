@@ -28,10 +28,11 @@ const simpleDef: WorkflowDefinition = {
 };
 
 describe('useWorkflowBuilder', () => {
-    it('initialises with empty nodes and edges when no definition given', () => {
+    it('initialises with start and end nodes when no definition given', () => {
         const { result } = renderHook(() => useWorkflowBuilder());
 
-        expect(result.current.nodes).toEqual([]);
+        expect(result.current.nodes).toHaveLength(2);
+        expect(result.current.nodes.map((n) => n.id)).toEqual(['__start__', '__end__']);
         expect(result.current.edges).toEqual([]);
     });
 
@@ -53,8 +54,9 @@ describe('useWorkflowBuilder', () => {
             result.current.addStep('action', handlers.send_email, { x: 100, y: 200 });
         });
 
-        expect(result.current.nodes).toHaveLength(1);
-        const node = result.current.nodes[0];
+        // 2 sentinel nodes + 1 added step
+        expect(result.current.nodes).toHaveLength(3);
+        const node = result.current.nodes.find((n) => n.id !== '__start__' && n.id !== '__end__')!;
         expect(node.data.handler).toBe('send_email');
         expect(node.data.description).toBe('Send an email');
         expect(node.data.parameters).toHaveLength(1);
@@ -211,14 +213,14 @@ describe('useWorkflowBuilder', () => {
                 result.current.addStep('action', handlers.send_email, { x: 0, y: 0 });
             });
 
-            expect(result.current.nodes).toHaveLength(1);
+            expect(result.current.nodes).toHaveLength(3);
             expect(result.current.canUndo).toBe(true);
 
             act(() => {
                 result.current.undo();
             });
 
-            expect(result.current.nodes).toHaveLength(0);
+            expect(result.current.nodes).toHaveLength(2);
             expect(result.current.canUndo).toBe(false);
             expect(result.current.canRedo).toBe(true);
         });
@@ -234,13 +236,13 @@ describe('useWorkflowBuilder', () => {
                 result.current.undo();
             });
 
-            expect(result.current.nodes).toHaveLength(0);
+            expect(result.current.nodes).toHaveLength(2);
 
             act(() => {
                 result.current.redo();
             });
 
-            expect(result.current.nodes).toHaveLength(1);
+            expect(result.current.nodes).toHaveLength(3);
             expect(result.current.canRedo).toBe(false);
         });
 
@@ -251,7 +253,7 @@ describe('useWorkflowBuilder', () => {
                 result.current.undo();
             });
 
-            expect(result.current.nodes).toEqual([]);
+            expect(result.current.nodes).toHaveLength(2);
         });
 
         it('redo is a no-op when stack is empty', () => {
@@ -261,7 +263,7 @@ describe('useWorkflowBuilder', () => {
                 result.current.redo();
             });
 
-            expect(result.current.nodes).toEqual([]);
+            expect(result.current.nodes).toHaveLength(2);
         });
     });
 });
