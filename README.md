@@ -265,7 +265,3 @@ function ColorPickerField({ parameter, value, onChange, error }: ParameterRender
 ```bash
 npm test
 ```
-
-## License
-
-UNLICENSED
