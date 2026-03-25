@@ -1,7 +1,7 @@
-# @workflowable/workflowable-react
+# @workflowable/react
 
-[![npm version](https://img.shields.io/npm/v/@workflowable/workflowable-react.svg)](https://www.npmjs.com/package/@workflowable/workflowable-react)
-[![npm downloads](https://img.shields.io/npm/dm/@workflowable/workflowable-react.svg)](https://www.npmjs.com/package/@workflowable/workflowable-react)
+[![npm version](https://img.shields.io/npm/v/@workflowable/react.svg)](https://www.npmjs.com/package/@workflowable/react)
+[![npm downloads](https://img.shields.io/npm/dm/@workflowable/react.svg)](https://www.npmjs.com/package/@workflowable/react)
 [![Tests](https://github.com/workflowable/workflowable-react/actions/workflows/tests.yml/badge.svg?branch=0.x)](https://github.com/workflowable/workflowable-react/actions/workflows/tests.yml)
 [![codecov](https://codecov.io/gh/workflowable/workflowable-react/branch/0.x/graph/badge.svg)](https://codecov.io/gh/workflowable/workflowable-react)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.7+-blue.svg)](https://www.typescriptlang.org/)
@@ -13,7 +13,7 @@ Designed to pair with the [workflowable/workflowable](https://github.com/workflo
 ## Installation
 
 ```bash
-npm install @workflowable/workflowable-react
+npm install @workflowable/react
 ```
 
 ### Peer Dependencies
@@ -29,7 +29,7 @@ import {
     WorkflowableProvider,
     useWorkflowBuilder,
     useWorkflowPersistence,
-} from '@workflowable/workflowable-react';
+} from '@workflowable/react';
 import { ReactFlow } from '@xyflow/react';
 
 function WorkflowEditor({ version, handlers, onSave }) {
@@ -249,7 +249,7 @@ const definition: WorkflowDefinition = {
 Register renderers for custom parameter types via the provider:
 
 ```tsx
-import type { ParameterRendererProps } from '@workflowable/workflowable-react';
+import type { ParameterRendererProps } from '@workflowable/react';
 
 function ColorPickerField({ parameter, value, onChange, error }: ParameterRendererProps) {
     return <input type="color" value={value as string} onChange={(e) => onChange(e.target.value)} />;
