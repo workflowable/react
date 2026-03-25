@@ -28,9 +28,10 @@ const simpleDef: WorkflowDefinition = {
 };
 
 describe('useWorkflowBuilder', () => {
-    it('initialises with start and end nodes when no definition given', () => {
+    it('initialises with synthetic start/end nodes when no definition given', () => {
         const { result } = renderHook(() => useWorkflowBuilder());
 
+        // Always creates __start__ and __end__ synthetic nodes
         expect(result.current.nodes).toHaveLength(2);
         expect(result.current.nodes.map((n) => n.id)).toEqual(['__start__', '__end__']);
         expect(result.current.edges).toEqual([]);
@@ -54,9 +55,10 @@ describe('useWorkflowBuilder', () => {
             result.current.addStep('action', handlers.send_email, { x: 100, y: 200 });
         });
 
-        // 2 sentinel nodes + 1 added step
+        // 2 synthetic + 1 added
         expect(result.current.nodes).toHaveLength(3);
-        const node = result.current.nodes.find((n) => n.id !== '__start__' && n.id !== '__end__')!;
+        const node = result.current.nodes.find((n) => n.data.handler === 'send_email')!;
+        expect(node).toBeDefined();
         expect(node.data.handler).toBe('send_email');
         expect(node.data.description).toBe('Send an email');
         expect(node.data.parameters).toHaveLength(1);
@@ -213,6 +215,7 @@ describe('useWorkflowBuilder', () => {
                 result.current.addStep('action', handlers.send_email, { x: 0, y: 0 });
             });
 
+            // 2 synthetic + 1 added
             expect(result.current.nodes).toHaveLength(3);
             expect(result.current.canUndo).toBe(true);
 
@@ -220,6 +223,7 @@ describe('useWorkflowBuilder', () => {
                 result.current.undo();
             });
 
+            // Back to just synthetic nodes
             expect(result.current.nodes).toHaveLength(2);
             expect(result.current.canUndo).toBe(false);
             expect(result.current.canRedo).toBe(true);
@@ -236,12 +240,14 @@ describe('useWorkflowBuilder', () => {
                 result.current.undo();
             });
 
+            // Back to synthetic nodes only
             expect(result.current.nodes).toHaveLength(2);
 
             act(() => {
                 result.current.redo();
             });
 
+            // 2 synthetic + 1 restored
             expect(result.current.nodes).toHaveLength(3);
             expect(result.current.canRedo).toBe(false);
         });
@@ -253,6 +259,7 @@ describe('useWorkflowBuilder', () => {
                 result.current.undo();
             });
 
+            // Still has synthetic nodes
             expect(result.current.nodes).toHaveLength(2);
         });
 
@@ -263,6 +270,7 @@ describe('useWorkflowBuilder', () => {
                 result.current.redo();
             });
 
+            // Still has synthetic nodes
             expect(result.current.nodes).toHaveLength(2);
         });
     });

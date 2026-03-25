@@ -1,5 +1,11 @@
 # @workflowable/react
 
+[![npm version](https://img.shields.io/npm/v/@workflowable/react.svg)](https://www.npmjs.com/package/@workflowable/react)
+[![npm downloads](https://img.shields.io/npm/dm/@workflowable/react.svg)](https://www.npmjs.com/package/@workflowable/react)
+[![Tests](https://github.com/workflowable/react/actions/workflows/tests.yml/badge.svg)](https://github.com/workflowable/react/actions/workflows/tests.yml)
+[![codecov](https://codecov.io/gh/workflowable/react/branch/0.x/graph/badge.svg)](https://codecov.io/gh/workflowable/react)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.7+-blue.svg)](https://www.typescriptlang.org/)
+
 Headless React library for building visual workflow editors. Provides types, state management, and bidirectional conversion between workflow definitions and [React Flow](https://reactflow.dev/) graphs.
 
 Designed to pair with the [workflowable/workflowable](https://github.com/workflowable/workflowable) Laravel package.
@@ -262,4 +268,4 @@ npm test
 
 ## License
 
-Private — not published to npm.
+UNLICENSED
